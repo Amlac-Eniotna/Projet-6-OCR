@@ -1,2 +1,1 @@
-# Projet-6-OCR
- 
+# Projet 6 Openclassrooms Sophie Bluel 
