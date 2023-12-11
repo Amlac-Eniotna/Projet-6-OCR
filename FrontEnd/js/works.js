@@ -9,8 +9,7 @@ export async function works() {
  * @returns {object} liste des travaux
  */
 async function getWorks() {
-    let getWorksList = await fetch("http://localhost:5678/api/works").then(getWorksList => getWorksList.json()).catch(error => console.error(error));
-    let worksList = getWorksList
+    let worksList = await fetch("http://localhost:5678/api/works").then(worksList => worksList.json()).catch(error => console.error(error));
     return(worksList);
 }
 
@@ -20,13 +19,17 @@ function resetFrontWorks() {
     galleryWorks.innerHTML = "";
 }
 
-
+/**
+ * fonction d'affichages des photo
+ * @param {object} worksList liste des travaux
+ */
 function addWorks(worksList) {
     console.log(worksList);
     for (let i = 0; i < worksList.length; i++) {
         let pictureWork = document.createElement("img");
         pictureWork.src = worksList[i].imageUrl;
         pictureWork.alt = worksList[i].title;
+        pictureWork.crossOrigin = "anonymous"
         let titleWork = document.createElement("figcaption");
         titleWork.innerText = worksList[i].title;
         let work = document.createElement("figure");
@@ -34,6 +37,5 @@ function addWorks(worksList) {
         work.appendChild(titleWork);
         let gallery = document.querySelector("#portfolio .gallery");
         gallery.appendChild(work);
-        console.log("a");
     };
 }
