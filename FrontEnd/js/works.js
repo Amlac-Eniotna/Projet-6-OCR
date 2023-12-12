@@ -1,7 +1,10 @@
+import { filters } from "./filters.js"
+
 export async function works() {
     resetFrontWorks();
     let worksList = await getWorks();
     addWorks(worksList);
+    filters(worksList);
 }
 
 /**
@@ -24,12 +27,11 @@ function resetFrontWorks() {
  * @param {object} worksList liste des travaux
  */
 function addWorks(worksList) {
-    console.log(worksList);
     for (let i = 0; i < worksList.length; i++) {
         let pictureWork = document.createElement("img");
         pictureWork.src = worksList[i].imageUrl;
         pictureWork.alt = worksList[i].title;
-        pictureWork.crossOrigin = "anonymous"
+        pictureWork.crossOrigin = "anonymous";
         let titleWork = document.createElement("figcaption");
         titleWork.innerText = worksList[i].title;
         let work = document.createElement("figure");
@@ -37,5 +39,5 @@ function addWorks(worksList) {
         work.appendChild(titleWork);
         let gallery = document.querySelector("#portfolio .gallery");
         gallery.appendChild(work);
-    };
+    }
 }
