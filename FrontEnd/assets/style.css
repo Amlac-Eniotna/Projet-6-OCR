@@ -127,7 +127,7 @@ li:hover {
 }
 
 /* filter */
-#listFilters {
+.list-filters {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
@@ -135,7 +135,7 @@ li:hover {
 	margin-bottom: 51px;
 }
 
-.filters {
+.list-filters__filters {
 	border-radius: 60px;
 	border: 1px solid #1D6154;
 	min-width: 100px;
@@ -145,13 +145,15 @@ li:hover {
 	font-size: 16px;
 	font-weight: 700;
 	color: #1D6154;
+	cursor: pointer;
+	user-select: none;
 }
 
-.longFilters {
+.list-filters__longFilters {
 	padding: 9px 15px;
 }
 
-.selectedFilters {
+.list-filters__selectedFilters {
 	background-color: #1D6154;
 	color: white;
 }
