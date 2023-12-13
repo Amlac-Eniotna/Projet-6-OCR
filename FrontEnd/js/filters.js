@@ -13,18 +13,10 @@ export function filters(worksList) {
  * @returns {array} liste de noms des filtres
  */
 function whatFilters(worksList) {
-    let listAllFilter = [];
+    let listAllFilter = new Set;
     for (let i = 0; i < worksList.length; i++)
-        listAllFilter[i] = worksList[i].category.name;
-    listAllFilter.sort();
-    let listFilter = [];
-    let j = 0;
-    for(let i = 0; i < listAllFilter.length; i++) {
-        if(listFilter[j-1] !== listAllFilter[i]) {
-            listFilter[j] = listAllFilter[i];
-            j++;
-        }
-    }
+        listAllFilter.add(worksList[i].category.name);
+    let listFilter = Array.from(listAllFilter);
     return listFilter;
 }
 
