@@ -14,8 +14,7 @@ export function filters(worksList) {
  */
 function whatFilters(worksList) {
     let listAllFilter = new Set;
-    for (let i = 0; i < worksList.length; i++)
-        listAllFilter.add(worksList[i].category.name);
+    worksList.forEach((worksList) => listAllFilter.add(worksList.category.name));
     let listFilter = Array.from(listAllFilter);
     return listFilter;
 }
@@ -35,15 +34,14 @@ function createBtnFilters(listFilter) {
     btnFilter.className = "list-filters__filters list-filters__selectedFilters";
     listBtnFilter.appendChild(btnFilter);
 
-    for(let i = 0; i < listFilter.length; i++) {
+    listFilter.forEach((nameFilter) => {
         btnFilter = document.createElement("li");
-        btnFilter.innerText = listFilter[i];
+        btnFilter.innerText = nameFilter;
         btnFilter.className = "list-filters__filters";
-        if(listFilter[i].length > 7){
+        if(nameFilter.length > 7)
             btnFilter.classList.add("list-filters__longFilters");
-        }
         listBtnFilter.appendChild(btnFilter);
-    }
+    })
 }
 
 /**
@@ -51,15 +49,15 @@ function createBtnFilters(listFilter) {
  */
 function clickBtnFilters() {
     let btnFilter = document.querySelectorAll(".list-filters__filters");
-    for(let i = 0; i < btnFilter.length; i++) {
-        btnFilter[i].addEventListener("click", (event) => {
+    btnFilter.forEach((btn) => {
+        btn.addEventListener("click", (event) => {
             if (!(event.target.classList.contains('list-filters__selectedFilters'))) {
-                for (let j = 0; j < btnFilter.length; j++) {
-                    btnFilter[j].classList.remove("list-filters__selectedFilters");
-                }
+                btnFilter.forEach((btnSelect) => {
+                    btnSelect.classList.remove("list-filters__selectedFilters");
+                });
                 event.target.classList.add("list-filters__selectedFilters");
             }
             filteredWork();
-        })
-    }
+        });
+    })
 }

@@ -4,7 +4,6 @@ import { filters } from "./filters.js"
 let worksListGlobale;
 
 export async function works() {
-    resetFrontWorks();
     let worksList = await getWorks();
     worksListGlobale = worksList;
     filters(worksList);
