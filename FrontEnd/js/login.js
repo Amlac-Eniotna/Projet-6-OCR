@@ -58,7 +58,7 @@ function showFailMessage() {
         mdp.classList.add("bad-input");
         errorMessage.className = "error-msg";
         errorMessage.innerText = "Mauvais email ou mot de passe";
-        let logZone = document.getElementById("login")
+        let logZone = document.getElementById("login");
         logZone.insertBefore(errorMessage, logZone.children[1]);
 }
 
