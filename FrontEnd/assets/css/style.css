@@ -130,6 +130,37 @@ li:hover {
 	margin-bottom: 51px;
 }
 
+/* edition zone */
+.block-edition {
+	background-color: black;
+	color: white;
+	height: 59px;
+}
+
+.block-edition__text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 11.45px;
+	cursor: pointer;
+}
+
+#portfolio .hedit {
+	margin-bottom: 0;
+}
+
+#portfolio .projet-edition__text {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	position: relative;
+	left: 55px;
+	gap: 30px;
+	text-align: center;
+	margin-bottom: 51px;
+}
+/* edition zone */
+
 /* filter zone */
 .list-filters {
 	display: flex;
@@ -162,6 +193,8 @@ li:hover {
 	color: white;
 }
 /* filter zone */
+
+
 
 .gallery {
 	width: 100%;

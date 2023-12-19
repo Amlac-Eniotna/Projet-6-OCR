@@ -30,7 +30,7 @@ function resetFrontWorks() {
  * @param {object} worksList - liste des travaux
  * @param {number} i - index du travail a partir de 0
  */
-function addWorks(worksList, i) {
+export function displayWork(worksList, i) {
     let pictureWork = document.createElement("img");
     pictureWork.src = worksList[i].imageUrl;
     pictureWork.alt = worksList[i].title;
@@ -73,9 +73,9 @@ function changeWorkByFilter(filterSelected) {
     resetFrontWorks();
     for (let i = 0; i < worksList.length; i++) {
         if(worksList[i].category.name === filterSelected) {
-            addWorks(worksList, i);
+            displayWork(worksList, i);
         } else if (filterSelected === "Tous") {
-            addWorks(worksList, i);
+            displayWork(worksList, i);
         }
     }
 }
