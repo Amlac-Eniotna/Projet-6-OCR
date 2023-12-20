@@ -8,6 +8,7 @@ export async function works() {
     worksListGlobale = worksList;
     filters(worksList);
     changeWorkByFilter("Tous");
+    return worksListGlobale
 }
 
 /**
@@ -30,7 +31,7 @@ function resetFrontWorks() {
  * @param {object} worksList - liste des travaux
  * @param {number} i - index du travail a partir de 0
  */
-export function displayWork(worksList, i) {
+function displayWork(worksList, i) {
     let pictureWork = document.createElement("img");
     pictureWork.src = worksList[i].imageUrl;
     pictureWork.alt = worksList[i].title;

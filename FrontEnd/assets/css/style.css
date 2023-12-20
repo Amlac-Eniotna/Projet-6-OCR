@@ -159,6 +159,81 @@ li:hover {
 	text-align: center;
 	margin-bottom: 51px;
 }
+
+.bg-modale {
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 1;
+}
+
+.modale {
+	position: relative;
+	padding: 60px 105px 45px;
+	background-color: white;
+	border-radius: 10px;
+	z-index: 2;
+	text-align: center;
+}
+
+.fa-xmark {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+}
+
+.modale h3 {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 26px;
+	text-align: center;
+	margin-bottom: 46px;
+}
+
+.modale__grid {
+	display: grid;
+	grid-template-columns: repeat(5, 75px);
+	grid-auto-rows: 100px;
+	gap: 25px 10px;
+	height: 420px;
+	border-bottom: 1px #B3B3B3 solid;
+	overflow: auto;
+	margin-bottom: 38px;
+}
+
+.modale__grid--img {
+	position: relative;
+}
+
+.modale__grid  img {
+	width: 100%;
+}
+
+.modale__grid  .fa-trash-can {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	color: white;
+	background-color: black;
+	height: 17px;
+	width: 17px;
+	top: 6px;
+	right: 6px;
+	border-radius: 2px;
+}
+
+.btn-ajout-photo {
+	background-color: #1D6154;
+	color: white;
+	padding: 10px 49px;
+	border-radius: 60px;
+	font-family: Syne;
+}
 /* edition zone */
 
 /* filter zone */
