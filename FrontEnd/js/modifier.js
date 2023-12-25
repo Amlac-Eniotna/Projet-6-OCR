@@ -29,13 +29,14 @@ function listenModifier() {
     let btnModifier = document.querySelectorAll(".block-edition__text");
     for (let i = 0; i < btnModifier.length ; i++) {
         btnModifier[i].addEventListener("click", (event) => {
+            // gestion de la modale
             displayModale();
+            exitModale();
         });
     }
 }
 
 function displayModale() {
-    console.log(worksListGlobal);
     let body = document.querySelector("body");
     let backgroundModale = document.createElement("aside");
     backgroundModale.classList.add("bg-modale");
@@ -68,4 +69,15 @@ function displayModale() {
     btnAddPicture.className = "btn-ajout-photo";
     btnAddPicture.href = "";
     modale.appendChild(btnAddPicture);
+}
+
+function exitModale() {
+    let backgroundModale = document.querySelector(".bg-modale");
+    backgroundModale.addEventListener("click", (event) => {
+        console.log(event.target)
+        if (event.target === document.querySelector(".bg-modale"))
+            backgroundModale.remove();
+        if (event.target === document.querySelector(".fa-xmark"))
+            backgroundModale.remove();
+    })
 }

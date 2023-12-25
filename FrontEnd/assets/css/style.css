@@ -137,6 +137,10 @@ li:hover {
 	height: 59px;
 }
 
+.block-edition:hover {
+	font-weight: bold;
+}
+
 .block-edition__text {
 	display: flex;
 	justify-content: center;
@@ -182,9 +186,15 @@ li:hover {
 }
 
 .fa-xmark {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: absolute;
 	top: 30px;
 	right: 30px;
+	height: 25px;
+	width: 25px;
+	border-radius: 50%;
 }
 
 .modale h3 {
