@@ -32,12 +32,15 @@ function listenModifier() {
             // gestion de la modale
             displayModale();
             exitModale();
+            deleteWork();
         });
     }
 }
 
 function displayModale() {
     let body = document.querySelector("body");
+    body.classList.add("scroll-off")
+
     let backgroundModale = document.createElement("aside");
     backgroundModale.classList.add("bg-modale");
     body.insertBefore(backgroundModale, body.children[0]);
@@ -72,12 +75,36 @@ function displayModale() {
 }
 
 function exitModale() {
+    let body = document.querySelector("body");
     let backgroundModale = document.querySelector(".bg-modale");
     backgroundModale.addEventListener("click", (event) => {
-        console.log(event.target)
-        if (event.target === document.querySelector(".bg-modale"))
+        if (event.target === document.querySelector(".bg-modale")) {
             backgroundModale.remove();
-        if (event.target === document.querySelector(".fa-xmark"))
+            body.classList.remove("scroll-off");
+        }
+        if (event.target === document.querySelector(".fa-xmark")) {
             backgroundModale.remove();
-    })
+            body.classList.remove("scroll-off");
+        }
+    });
+}
+
+function deleteWork() {
+    let trashBtn = document.querySelectorAll(".fa-trash-can");
+    let token = localStorage.getItem("token");
+    trashBtn.forEach((btn, i) => {
+        btn.addEventListener("click", async (event) => {
+            i++;
+            let reponse = await fetch('http://localhost:5678/api/works/' + i, {
+                method: 'delete',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(reponse)
+            if(reponse.status == 204) {
+                event.target.parentElement.remove();
+            }
+        });
+    });
 }
