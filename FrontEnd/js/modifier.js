@@ -33,6 +33,7 @@ function listenModifier() {
             displayModale();
             exitModale();
             deleteWork();
+            addWork();
         });
     }
 }
@@ -45,18 +46,19 @@ function displayModale() {
     backgroundModale.classList.add("bg-modale");
     body.insertBefore(backgroundModale, body.children[0]);
 
-    let modale = document.createElement("div");
+    let modale = document.createElement("form");
     modale.classList.add("modale");
     modale.innerHTML = '<i class="fa-solid fa-xmark fa-xl"></i><h3>Galerie photo</h3>';
     backgroundModale.appendChild(modale);
 
     let grid = document.createElement("div");
-    grid.className = "modale__grid";
+    grid.className = "modale__grid modale__bloc-central";
     modale.appendChild(grid);
 
     for(let i = 0; i < worksListGlobal.length; i++) {
         let trash = document.createElement("i");
         trash.className = "fa-solid fa-trash-can fa-xs";
+        trash.dataset.id = worksListGlobal[i].id;
         let image = document.createElement("img");
         image.src = worksListGlobal[i].imageUrl;
         image.alt = worksListGlobal[i].title;
@@ -67,7 +69,7 @@ function displayModale() {
         grid.appendChild(divImage);
     }
 
-    let btnAddPicture = document.createElement("a");
+    let btnAddPicture = document.createElement("button");
     btnAddPicture.innerText = "Ajouter une photo";
     btnAddPicture.className = "btn-ajout-photo";
     btnAddPicture.href = "";
@@ -94,17 +96,80 @@ function deleteWork() {
     let token = localStorage.getItem("token");
     trashBtn.forEach((btn, i) => {
         btn.addEventListener("click", async (event) => {
-            i++;
-            let reponse = await fetch('http://localhost:5678/api/works/' + i, {
+            let reponse = await fetch('http://localhost:5678/api/works/' + btn.dataset.id, {
                 method: 'delete',
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: {Authorization: `Bearer ${token}`}
             });
             console.log(reponse)
-            if(reponse.status == 204) {
+            if(reponse.status == 204)
                 event.target.parentElement.remove();
+        });
+    });
+}
+
+/* ---------------- ajout de travaux ---------------- */
+
+function addWork() {
+    let btnAddPicture = document.querySelector(".btn-ajout-photo");
+    btnAddPicture.addEventListener("click", function changeModale(event) {
+        event.preventDefault();
+        let modaleTitle = document.querySelector(".modale h3");
+        modaleTitle.innerText = "Ajout photo";
+        let blocCentral = document.querySelector(".modale__bloc-central");
+        blocCentral.classList.remove("modale__grid");
+        blocCentral.classList.add("modale__flex")
+        blocCentral.innerHTML = "";
+
+        let divAddPicture = document.createElement("div");
+        divAddPicture.classList.add("modale__bloc-central--img-selection");
+        divAddPicture.innerHTML = '<img src="./assets/images/svg-ajout-photo.svg"><button>+ Ajouter photo</button><p>jpg, png : 4mo max</p>';
+        blocCentral.appendChild(divAddPicture);
+
+        let labelTitlePicture = document.createElement("label");
+        let inputTitlePicture = document.createElement("input");
+
+        labelTitlePicture.innerText = "Titre";
+        labelTitlePicture.for = "title-picture-add";
+
+        inputTitlePicture.type = "text";
+        inputTitlePicture.id = "title-picture-add";
+        inputTitlePicture.name = "title-picture-add";
+        
+        blocCentral.appendChild(labelTitlePicture);
+        blocCentral.appendChild(inputTitlePicture);
+
+/* -------------------------------------------- */
+
+        let labelCategoryPicture = document.createElement("label");
+        let inputCategoryPicture = document.createElement("input");
+        let listCategoryPicture = document.createElement("datalist");
+        
+        labelCategoryPicture.innerText = "Catégorie";
+        labelCategoryPicture.for = "category-picture-add";
+
+        inputCategoryPicture.setAttribute('list', "category-work");
+        inputCategoryPicture.id = "category-picture-add";
+        inputCategoryPicture.name = "category-picture-add";
+
+        listCategoryPicture.id = "category-work";
+        let categories = document.querySelectorAll(".list-filters__filters");
+        categories.forEach(category => {
+            if(category.innerText !== "Tous") {
+                let optionCategory = document.createElement("option");
+                optionCategory.value = category.innerText;
+                listCategoryPicture.appendChild(optionCategory);
             }
+        });
+
+        blocCentral.appendChild(labelCategoryPicture);
+        blocCentral.appendChild(inputCategoryPicture);
+        blocCentral.appendChild(listCategoryPicture);
+        
+        
+        btnAddPicture.innerText = "Valider";
+        btnAddPicture.removeEventListener("click", changeModale);
+        btnAddPicture.addEventListener('click', (e) => {
+            e.preventDefault();
         });
     });
 }

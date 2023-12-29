@@ -8,7 +8,7 @@ export async function works() {
     worksListGlobale = worksList;
     filters(worksList);
     changeWorkByFilter("Tous");
-    return worksListGlobale
+    return worksListGlobale;
 }
 
 /**
