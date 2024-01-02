@@ -266,14 +266,22 @@ li:hover {
 	align-items: center;
 	background-color: #E8F1F6;
 	border-radius: 3px;
-	padding: 13px 0 19px;
 	cursor: pointer;
+	position: relative;
 }
 
-.modale__bloc-central--img-selection img {
+.modale__bloc-central--img-selection #svg-image {
 	height: 76px;
 	width: 76px;
 	margin-bottom: 6px;
+	margin-top: 13px;
+}
+
+.modale__bloc-central--img-selection .img-select {
+	position: absolute;
+	object-fit: contain;
+	height: 100%;
+	width: 100%;
 }
 
 .modale__bloc-central--img-selection button {
@@ -289,10 +297,24 @@ li:hover {
 	cursor: pointer;
 }
 
+.modale__bloc-central--img-selection input[type="file"] {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+	padding: 0;
+	opacity: 0;
+}
+
+.modale__bloc-central--img-selection .invisible {
+	opacity: 0;
+}
+
 .modale__bloc-central--img-selection p {
 	color: #444;
 	text-align: center;
 	font-size: 10px;
+	margin-bottom: 19px;
 }
 
 .modale form {
@@ -309,11 +331,16 @@ li:hover {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
     padding: 0 15px;
 }
+
 .modale label {
 	margin: 2em 0 1em 0;
 	text-align: start;
 	color: #3D3D3D;
 	line-height: normal;
+}
+
+.btn-gris {
+	background: #A7A7A7;
 }
 /* edition zone */
 

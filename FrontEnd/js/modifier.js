@@ -120,16 +120,46 @@ function addWork() {
         blocCentral.classList.add("modale__flex")
         blocCentral.innerHTML = "";
 
+/* --------------------------------- */
+//input file
         let divAddPicture = document.createElement("div");
         divAddPicture.classList.add("modale__bloc-central--img-selection");
-        divAddPicture.innerHTML = '<img src="./assets/images/svg-ajout-photo.svg"><button>+ Ajouter photo</button><p>jpg, png : 4mo max</p>';
+
+        divAddPicture.innerHTML = '<img id="svg-image" src="./assets/images/svg-ajout-photo.svg"><button type="button" disabled>+ Ajouter photo</button><p>jpg, png : 4mo max</p>';
+        let inputSelectPicture = document.createElement("input");
+        inputSelectPicture.type = "file";
+        inputSelectPicture.name = "picture-selector";
+        inputSelectPicture.id = "picture-selector";
+        inputSelectPicture.accept = "image/png, image/jpeg";
+        divAddPicture.appendChild(inputSelectPicture);
         blocCentral.appendChild(divAddPicture);
+        
+        divAddPicture.addEventListener('click', () => {
+            inputSelectPicture.addEventListener('change', () => {
+                let reader = new FileReader();
+                let imgSelected = document.querySelector(".img-select");
+                if(imgSelected == null) {
+                    imgSelected = document.createElement("img");
+                    imgSelected.className = "img-select";
+                }
+                reader.addEventListener("load", () => {
+                    imgSelected.src = reader.result;
+                })
+                reader.readAsDataURL(inputSelectPicture.files[0]);
+                for(let i = 0; i < 3; i++) {
+                    divAddPicture.children[i].classList.add("invisible");
+                }
+                divAddPicture.appendChild(imgSelected);
+            })
+        });
+
+/* ----------------------------------- */
 
         let labelTitlePicture = document.createElement("label");
         let inputTitlePicture = document.createElement("input");
 
         labelTitlePicture.innerText = "Titre";
-        labelTitlePicture.for = "title-picture-add";
+        labelTitlePicture.setAttribute('for', "title-picture-add");
 
         inputTitlePicture.type = "text";
         inputTitlePicture.id = "title-picture-add";
@@ -145,7 +175,7 @@ function addWork() {
         let listCategoryPicture = document.createElement("datalist");
         
         labelCategoryPicture.innerText = "Catégorie";
-        labelCategoryPicture.for = "category-picture-add";
+        labelCategoryPicture.setAttribute('for', "category-picture-add");
 
         inputCategoryPicture.setAttribute('list', "category-work");
         inputCategoryPicture.id = "category-picture-add";
@@ -167,9 +197,22 @@ function addWork() {
         
         
         btnAddPicture.innerText = "Valider";
+        btnAddPicture.classList.add("btn-gris");
         btnAddPicture.removeEventListener("click", changeModale);
-        btnAddPicture.addEventListener('click', (e) => {
-            e.preventDefault();
+        btnAddPicture.addEventListener('click', function send(event) {
+            event.preventDefault();
         });
     });
+}
+
+function checkForm() {
+    
+}
+
+function selectPicture() {
+
+}
+
+function sendWork() {
+
 }
