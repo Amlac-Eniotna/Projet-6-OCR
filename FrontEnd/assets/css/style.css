@@ -189,13 +189,26 @@ li:hover {
 	text-align: center;
 }
 
-.fa-xmark {
+.modale .fa-xmark {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	position: absolute;
 	top: 30px;
 	right: 30px;
+	height: 25px;
+	width: 25px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.modale .fa-arrow-left {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 30px;
+	left: 30px;
 	height: 25px;
 	width: 25px;
 	border-radius: 50%;
@@ -324,12 +337,14 @@ li:hover {
 	flex-direction: column;
 }
 
-.modale input {
+.modale input, .modale select {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
     padding: 0 15px;
+	background-color: white;
+	color: #444444;
 }
 
 .modale label {

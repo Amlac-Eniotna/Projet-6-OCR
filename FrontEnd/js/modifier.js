@@ -55,13 +55,15 @@ function displayModale() {
     grid.className = "modale__grid modale__bloc-central";
     modale.appendChild(grid);
 
-    for(let i = 0; i < worksListGlobal.length; i++) {
+    let images = document.querySelectorAll(".gallery img");
+
+    for(let i = 0; i < images.length; i++) {
         let trash = document.createElement("i");
         trash.className = "fa-solid fa-trash-can fa-xs";
         trash.dataset.id = worksListGlobal[i].id;
         let image = document.createElement("img");
-        image.src = worksListGlobal[i].imageUrl;
-        image.alt = worksListGlobal[i].title;
+        image.src = images[i].src;
+        image.alt = images[i].alt;
         let divImage = document.createElement("div");
         divImage.className = "modale__grid--img";
         divImage.appendChild(trash);
@@ -94,15 +96,18 @@ function exitModale() {
 function deleteWork() {
     let trashBtn = document.querySelectorAll(".fa-trash-can");
     let token = localStorage.getItem("token");
-    trashBtn.forEach((btn, i) => {
-        btn.addEventListener("click", async (event) => {
+    trashBtn.forEach((btn) => {
+        btn.addEventListener("click", async function trashClick(event) {
             let reponse = await fetch('http://localhost:5678/api/works/' + btn.dataset.id, {
                 method: 'delete',
                 headers: {Authorization: `Bearer ${token}`}
             });
-            console.log(reponse)
-            if(reponse.status == 204)
-                event.target.parentElement.remove();
+            if(reponse.status == 204){
+                let works = document.querySelectorAll(`[src="${event.target.parentElement.lastChild.src}"]`);
+                works.forEach((work) => {
+                    work.parentElement.remove();
+                });
+            }
         });
     });
 }
@@ -111,14 +116,29 @@ function deleteWork() {
 
 function addWork() {
     let btnAddPicture = document.querySelector(".btn-ajout-photo");
-    btnAddPicture.addEventListener("click", function changeModale(event) {
+    btnAddPicture.addEventListener("click", async function changeModale(event) {
         event.preventDefault();
         let modaleTitle = document.querySelector(".modale h3");
         modaleTitle.innerText = "Ajout photo";
         let blocCentral = document.querySelector(".modale__bloc-central");
         blocCentral.classList.remove("modale__grid");
-        blocCentral.classList.add("modale__flex")
+        blocCentral.classList.add("modale__flex");
         blocCentral.innerHTML = "";
+
+        /* -------------------*/
+
+        let modale = document.querySelector(".modale");
+        let backArrow = document.createElement("i");
+        backArrow.className = "fa-solid fa-arrow-left fa-xl";
+        modale.insertBefore(backArrow, modale.children[0]);
+        backArrow.addEventListener('click', () => {
+            let bgModale = document.querySelector(".bg-modale");
+            bgModale.remove();
+            displayModale();
+            addWork();
+            deleteWork();
+            exitModale();
+        });
 
 /* --------------------------------- */
 //input file
@@ -130,6 +150,7 @@ function addWork() {
         inputSelectPicture.type = "file";
         inputSelectPicture.name = "picture-selector";
         inputSelectPicture.id = "picture-selector";
+        inputSelectPicture.classList.add("input-modale");
         inputSelectPicture.accept = "image/png, image/jpeg";
         divAddPicture.appendChild(inputSelectPicture);
         blocCentral.appendChild(divAddPicture);
@@ -164,55 +185,90 @@ function addWork() {
         inputTitlePicture.type = "text";
         inputTitlePicture.id = "title-picture-add";
         inputTitlePicture.name = "title-picture-add";
+        inputTitlePicture.classList.add("input-modale");
         
         blocCentral.appendChild(labelTitlePicture);
         blocCentral.appendChild(inputTitlePicture);
 
 /* -------------------------------------------- */
+        
+        let categories = await fetch("http://localhost:5678/api/categories").then(categories => categories.json()).catch(error => console.error(error));
 
         let labelCategoryPicture = document.createElement("label");
-        let inputCategoryPicture = document.createElement("input");
-        let listCategoryPicture = document.createElement("datalist");
+        let inputCategoryPicture = document.createElement("select");
         
         labelCategoryPicture.innerText = "Catégorie";
         labelCategoryPicture.setAttribute('for', "category-picture-add");
 
-        inputCategoryPicture.setAttribute('list', "category-work");
         inputCategoryPicture.id = "category-picture-add";
         inputCategoryPicture.name = "category-picture-add";
+        inputCategoryPicture.classList.add("input-modale");
 
-        listCategoryPicture.id = "category-work";
-        let categories = document.querySelectorAll(".list-filters__filters");
-        categories.forEach(category => {
-            if(category.innerText !== "Tous") {
-                let optionCategory = document.createElement("option");
-                optionCategory.value = category.innerText;
-                listCategoryPicture.appendChild(optionCategory);
-            }
+        let optionCategory = document.createElement("option");
+        optionCategory.value = "";
+        optionCategory.innerText = "";
+        inputCategoryPicture.appendChild(optionCategory);
+
+        categories.forEach((category) => {
+            let optionCategory = document.createElement("option");
+            optionCategory.value = category.id;
+            optionCategory.innerText = category.name;
+            inputCategoryPicture.appendChild(optionCategory);
         });
 
         blocCentral.appendChild(labelCategoryPicture);
         blocCentral.appendChild(inputCategoryPicture);
-        blocCentral.appendChild(listCategoryPicture);
         
         
         btnAddPicture.innerText = "Valider";
         btnAddPicture.classList.add("btn-gris");
         btnAddPicture.removeEventListener("click", changeModale);
-        btnAddPicture.addEventListener('click', function send(event) {
-            event.preventDefault();
-        });
+        btnAddPicture.addEventListener("click", (e) => e.preventDefault());
+        checkForm();
     });
 }
 
 function checkForm() {
-    
+    let inputs = document.querySelectorAll('.input-modale');
+    let completion = [false, false, false];
+    let btnAddPicture = document.querySelector(".btn-ajout-photo");
+    inputs.forEach((input, i) => {
+        input.addEventListener('change', () => {
+            if(input.value) {
+                completion[i] = true;
+            } else {
+                completion[i] = false;
+            }
+            if(!(completion.includes(false))) {
+                document.querySelector('.modale .btn-ajout-photo').classList.remove('btn-gris');
+                btnAddPicture.addEventListener('click', sendWork);
+            } else if(!(document.querySelector('.modale .btn-ajout-photo').classList.contains('btn-gris')) && completion.includes(false)) {
+                document.querySelector('.modale .btn-ajout-photo').classList.add('btn-gris');
+                btnAddPicture.removeEventListener('click', sendWork);
+            }
+        });
+    });
 }
 
-function selectPicture() {
+async function sendWork(event) {
+    event.preventDefault();
+    let formData = new FormData();
+    formData.append('image', document.getElementById("picture-selector").files[0]);
+    formData.append('title', document.getElementById("title-picture-add").value);
+    formData.append('category', parseInt(document.getElementById("category-picture-add").value));
+    let token = localStorage.getItem("token");
 
+    let reponse = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {"Authorization": `Bearer ${token}`},
+        body: formData
+    });
+    if(reponse.status == 201)
+        showNewWork(reponse);
 }
 
-function sendWork() {
-
+function showNewWork(reponse) {
+    console.log(reponse)
 }
+
+//mettre en local storage la liste des fichier delete
