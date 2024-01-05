@@ -73,10 +73,12 @@ function changeWorkByFilter(filterSelected) {
     let worksList = worksListGlobale;
     resetFrontWorks();
     for (let i = 0; i < worksList.length; i++) {
-        if(worksList[i].category.name === filterSelected) {
-            displayWork(worksList, i);
-        } else if (filterSelected === "Tous") {
-            displayWork(worksList, i);
+        if(worksList[i]){
+            if(worksList[i].category.name === filterSelected) {
+                displayWork(worksList, i);
+            } else if (filterSelected === "Tous") {
+                displayWork(worksList, i);
+            }
         }
     }
 }
