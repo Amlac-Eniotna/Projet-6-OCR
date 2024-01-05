@@ -1,3 +1,5 @@
+import { filteredWork } from "./works.js";
+
 let worksListGlobal;
 
 export function modifier(worksList) {
@@ -55,15 +57,13 @@ function displayModale() {
     grid.className = "modale__grid modale__bloc-central";
     modale.appendChild(grid);
 
-    let images = document.querySelectorAll(".gallery img");
-
-    for(let i = 0; i < images.length; i++) {
+    for(let i = 0; i < worksListGlobal.length; i++) {
         let trash = document.createElement("i");
         trash.className = "fa-solid fa-trash-can fa-xs";
         trash.dataset.id = worksListGlobal[i].id;
         let image = document.createElement("img");
-        image.src = images[i].src;
-        image.alt = images[i].alt;
+        image.src = worksListGlobal[i].imageUrl;
+        image.alt = worksListGlobal[i].title;
         let divImage = document.createElement("div");
         divImage.className = "modale__grid--img";
         divImage.appendChild(trash);
@@ -107,6 +107,11 @@ function deleteWork() {
                 works.forEach((work) => {
                     work.parentElement.remove();
                 });
+                for(let i = 0; i < worksListGlobal.length; i++) {
+                    if(worksListGlobal[i].imageUrl == event.target.parentElement.lastChild.src) {
+                        worksListGlobal.splice(i, 1);
+                    }
+                }
             }
         });
     });
@@ -263,12 +268,16 @@ async function sendWork(event) {
         headers: {"Authorization": `Bearer ${token}`},
         body: formData
     });
-    if(reponse.status == 201)
+    if(reponse.status == 201){
+        reponse = await reponse.json();
         showNewWork(reponse);
+    }
 }
 
 function showNewWork(reponse) {
-    console.log(reponse)
+    reponse.categoryId = parseInt(reponse.categoryId)
+    worksListGlobal[worksListGlobal.length + 1] = reponse
+    filteredWork();
 }
 
 //mettre en local storage la liste des fichier delete
