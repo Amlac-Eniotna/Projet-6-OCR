@@ -275,8 +275,12 @@ async function sendWork(event) {
 }
 
 function showNewWork(reponse) {
-    reponse.categoryId = parseInt(reponse.categoryId)
-    worksListGlobal[worksListGlobal.length + 1] = reponse
+    reponse.categoryId = parseInt(reponse.categoryId);
+    reponse.category = {
+        "id": parseInt(reponse.categoryId),
+        "name": document.getElementById("category-picture-add").options[document.getElementById("category-picture-add").selectedIndex].text
+    }
+    worksListGlobal[worksListGlobal.length + 1] = reponse;
     filteredWork();
 }
 
