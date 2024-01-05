@@ -38,11 +38,14 @@ function whatFilters(worksList) {
  * @param {array} listFilter - tableaux d'objet contient titre et id des catégorie
  */
 function createBtnFilters(listFilter) {
-    let listBtnFilter = document.createElement("ul");
-    listBtnFilter.className = "list-filters";
-    let portfolio = document.getElementById("portfolio");
-    portfolio.insertBefore(listBtnFilter, portfolio.children[1]);
-
+    let listBtnFilter = document.querySelector(".list-filters");
+    if(!(listBtnFilter)){
+        listBtnFilter = document.createElement("ul");
+        listBtnFilter.className = "list-filters";
+        let portfolio = document.getElementById("portfolio");
+        portfolio.insertBefore(listBtnFilter, portfolio.children[1]);
+    }
+    listBtnFilter.innerHTML = "";
     let btnFilter = document.createElement("li");
     btnFilter.innerText = "Tous";
     btnFilter.className = "list-filters__filters list-filters__selectedFilters";
