@@ -13,15 +13,29 @@ export function filters(worksList) {
  * @returns {array} liste de noms des filtres
  */
 function whatFilters(worksList) {
-    let listAllFilter = new Set;
-    worksList.forEach((worksList) => listAllFilter.add(worksList.category.name));
-    let listFilter = Array.from(listAllFilter);
-    return listFilter;
+    let filters = [];
+    // let filter = Object.create(null);
+    let titleFilter = new Set;
+    let categoryId = new Set;
+    worksList.forEach((worksList) => {
+        titleFilter.add(worksList.category.name);
+        categoryId.add(worksList.category.id);
+    });
+    let arrayId = [...categoryId];
+    let arrayTitle = [...titleFilter];
+    for(let i = 0; i < categoryId.size; i++) {
+        let filter = {
+            'title': arrayTitle[i],
+            'categoryId': arrayId[i]
+        }
+        filters.push(filter);
+    }
+    return filters;
 }
 
 /**
  * création des boutons filtres
- * @param {array} listFilter - liste des noms des filtres
+ * @param {array} listFilter - tableaux d'objet contient titre et id des catégorie
  */
 function createBtnFilters(listFilter) {
     let listBtnFilter = document.createElement("ul");
@@ -34,11 +48,12 @@ function createBtnFilters(listFilter) {
     btnFilter.className = "list-filters__filters list-filters__selectedFilters";
     listBtnFilter.appendChild(btnFilter);
 
-    listFilter.forEach((nameFilter) => {
+    listFilter.forEach((filter) => {
         btnFilter = document.createElement("li");
-        btnFilter.innerText = nameFilter;
+        btnFilter.innerText = filter.title;
         btnFilter.className = "list-filters__filters";
-        if(nameFilter.length > 7)
+        btnFilter.dataset.categoryId = filter.categoryId
+        if(filter.title.length > 7)
             btnFilter.classList.add("list-filters__longFilters");
         listBtnFilter.appendChild(btnFilter);
     })
