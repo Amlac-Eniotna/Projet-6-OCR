@@ -283,5 +283,3 @@ function showNewWork(reponse) {
     worksListGlobal[worksListGlobal.length + 1] = reponse;
     filteredWork();
 }
-
-//mettre en local storage la liste des fichier delete
