@@ -5,7 +5,22 @@ function login() {
     btnLogin.addEventListener("click", (event) => {
         event.preventDefault();
         asyncEventListen();
+        loading("click");
     });
+}
+
+/**
+ * change le text du bouton en fonction de se qu'il se passe
+ * @param {string} action - reçois "click" pour le gif de chargement ou "reset" pour reproposer de se connecter
+ */
+function loading(action) {
+    let btn = document.getElementById("btn-login")
+    if(action == "click"){
+        btn.innerHTML = '<img src="../assets/images/load-38_256.gif" alt="chargement..." class="chargement">';
+    }
+    if(action == "reset"){
+        btn.innerHTML = 'Se connecter';
+    }
 }
 
 /**
@@ -67,6 +82,7 @@ function showFailMessage(reponse) {
     } else if(reponse == "error") {
         errorMessage.innerText = "Connexion indisponible";
     }
+    loading("reset");
 }
 
 /**
