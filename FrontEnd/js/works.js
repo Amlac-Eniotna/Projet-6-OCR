@@ -6,9 +6,42 @@ let worksListGlobale;
 export async function works() {
     let worksList = await getWorks();
     worksListGlobale = worksList;
-    filters(worksList);
-    changeWorkByFilter("Tous");
-    return worksListGlobale;
+    if(worksList){
+        showSection();
+        filters(worksList);
+        changeWorkByFilter("Tous");
+        return worksListGlobale;
+    } else if (!(worksList)) {
+        errorMessage();
+    }
+}
+
+function showSection() {
+    let portfolio = document.getElementById("portfolio");
+    let contact = document.getElementById("contact");
+    portfolio.removeAttribute("class");
+    contact.removeAttribute("class");
+    let chargement = document.getElementById("chargement");
+    chargement.remove();
+}
+
+function errorMessage() {
+    let chargement = document.getElementById("chargement");
+    chargement.innerHTML = "";
+
+    let codeError = document.createElement("p");
+    codeError.className = "erreur-504 erreur-message";
+    codeError.innerText = "504";
+
+    let messageError = document.createElement("p");
+    messageError.className = "erreur-message";
+    messageError.innerText = "Le serveur n'a pas répondu";
+
+    chargement.appendChild(codeError);
+    chargement.appendChild(messageError);
+
+    let contact = document.getElementById("contact");
+    contact.remove();
 }
 
 /**

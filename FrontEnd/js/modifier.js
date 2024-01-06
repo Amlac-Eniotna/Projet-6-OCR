@@ -9,6 +9,7 @@ export function modifier(worksList) {
 }
 
 function displayModifier() {
+    if(worksListGlobal){
     let rmH = document.querySelector("#portfolio h2");
     rmH.remove();
 
@@ -25,6 +26,7 @@ function displayModifier() {
     textModifier.innerHTML = `<h2 class="hedit">Mes Projets</h2><div class="block-edition__text">${penToSquare}\n<a>modifier</a></div>`;
     let portfolio = document.getElementById("portfolio");
     portfolio.insertBefore(textModifier, portfolio.children[0]);
+}
 }
 
 function listenModifier() {
