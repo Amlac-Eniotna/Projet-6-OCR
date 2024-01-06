@@ -142,7 +142,7 @@ li:hover {
 	margin: 2em 0 1em 0;
 }
 
-input[type="submit"]{
+button[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -151,6 +151,12 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	border: none;
+    font-size: 1.2em;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 input[type="submit"]:active{
@@ -163,6 +169,15 @@ input[type="submit"]:active{
     text-align: center;
 }
 
+.display-off {
+	display: none;
+}
+
+.chargement {
+	object-fit: contain;
+	height: 2em;
+	filter: saturate(0%) hue-rotate(338deg) brightness(1000%);
+}
 /* ---- footer ---- */
 
 footer {
