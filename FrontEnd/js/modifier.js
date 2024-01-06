@@ -8,32 +8,42 @@ export function modifier(worksList) {
     listenModifier();
 }
 
+/**
+ * créer les boutons pour ouvrir la modale
+ */
 function displayModifier() {
     if(worksListGlobal){
-    let rmH = document.querySelector("#portfolio h2");
-    rmH.remove();
+        //efface le titre pour le recreer dans un bloque après
+        let portfolioHTwo = document.querySelector("#portfolio h2");
+        let portfolioTitle = portfolioHTwo.innerText;
+        portfolioHTwo.remove();
 
-    let penToSquare = '<i class="fa-regular fa-pen-to-square"></i>';
-    let body = document.querySelector("body");
-    let blockEdition = document.createElement("div");
-    blockEdition.classList.add("block-edition");
-    blockEdition.classList.add("block-edition__text");
-    blockEdition.innerHTML = `${penToSquare}\n<p>Mode édition</p>`;
-    body.insertBefore(blockEdition, body.children[0]);
+        //bouton d'ouverture de modale en haut de pages
+        let penToSquare = '<i class="fa-regular fa-pen-to-square"></i>';
+        let body = document.querySelector("body");
+        let blockEdition = document.createElement("div");
+        blockEdition.classList.add("block-edition");
+        blockEdition.classList.add("block-edition__text");
+        blockEdition.innerHTML = `${penToSquare}\n<p>Mode édition</p>`;
+        body.insertBefore(blockEdition, body.children[0]);
 
-    let textModifier = document.createElement("div");
-    textModifier.classList.add("projet-edition__text");
-    textModifier.innerHTML = `<h2 class="hedit">Mes Projets</h2><div class="block-edition__text">${penToSquare}\n<a>modifier</a></div>`;
-    let portfolio = document.getElementById("portfolio");
-    portfolio.insertBefore(textModifier, portfolio.children[0]);
+        //texte cliquable à coté du titre de la section portfolio
+        let textModifier = document.createElement("div");
+        textModifier.classList.add("projet-edition__text");
+        textModifier.innerHTML = `<h2 class="hedit">${portfolioTitle}</h2><div class="block-edition__text">${penToSquare}\n<a>modifier</a></div>`;
+        let portfolio = document.getElementById("portfolio");
+        portfolio.insertBefore(textModifier, portfolio.children[0]);
+    }
 }
-}
 
+/**
+ * place un eventListener sur les boutons d'affiche de modale
+ */
 function listenModifier() {
     let btnModifier = document.querySelectorAll(".block-edition__text");
     for (let i = 0; i < btnModifier.length ; i++) {
-        btnModifier[i].addEventListener("click", (event) => {
-            // gestion de la modale
+        btnModifier[i].addEventListener("click", () => {
+            // gestion interne à la modale
             displayModale();
             exitModale();
             deleteWork();
@@ -42,6 +52,9 @@ function listenModifier() {
     }
 }
 
+/**
+ * affiche la première page de la modale
+ */
 function displayModale() {
     let body = document.querySelector("body");
     body.classList.add("scroll-off")
@@ -80,6 +93,9 @@ function displayModale() {
     modale.appendChild(btnAddPicture);
 }
 
+/**
+ * place des eventlistener pour fermé la modale
+ */
 function exitModale() {
     let body = document.querySelector("body");
     let backgroundModale = document.querySelector(".bg-modale");
@@ -95,6 +111,9 @@ function exitModale() {
     });
 }
 
+/**
+ * ajouts d'eventlistener sur les poubelles et envoi l'ordre de suppression à l'api en cas de clique
+ */
 function deleteWork() {
     let trashBtn = document.querySelectorAll(".fa-trash-can");
     let token = localStorage.getItem("token");
@@ -103,8 +122,8 @@ function deleteWork() {
             let reponse = await fetch('http://localhost:5678/api/works/' + btn.dataset.id, {
                 method: 'delete',
                 headers: {Authorization: `Bearer ${token}`}
-            });
-            if(reponse.status == 204){
+            }).catch(() => { notDeleted("error"); });
+            if(reponse.status == 204 || reponse.status == 200){                    // signalé 204
                 let works = document.querySelectorAll(`[src="${event.target.parentElement.lastChild.src}"]`);
                 works.forEach((work) => {
                     work.parentElement.remove();
@@ -114,9 +133,30 @@ function deleteWork() {
                         worksListGlobal.splice(i, 1);
                     }
                 }
+            } else {
+                notDeleted(reponse);
             }
         });
     });
+}
+
+/**
+ * affiche un message d'erreur
+ * @param reponse - reponse de l'api
+ */
+function notDeleted(reponse) {
+    let messageError = document.querySelector(".deleteError");
+    if(!(messageError)) {
+        let modale = document.querySelector(".modale");
+        messageError = document.createElement("p");
+        messageError.className = "erreur-message erreur-suppression";
+        modale.insertBefore(messageError, modale.children[0]);
+    }
+    if(reponse.status == 401) {
+        messageError.innerText = "Connexion expirée ou non autorisée";
+    } else {
+        messageError.innerText = "Serveur indisponible";
+    }
 }
 
 /* ---------------- ajout de travaux ---------------- */
