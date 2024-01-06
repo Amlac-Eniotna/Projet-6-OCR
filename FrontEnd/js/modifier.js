@@ -141,8 +141,8 @@ function deleteWork() {
 }
 
 /**
- * affiche un message d'erreur
- * @param reponse - reponse de l'api
+ * affiche un message d'erreur du delete
+ * @param {object} reponse - reponse de l'api ou string "error" si api injoignable
  */
 function notDeleted(reponse) {
     let messageError = document.querySelector(".deleteError");
@@ -153,11 +153,13 @@ function notDeleted(reponse) {
         modale.insertBefore(messageError, modale.children[0]);
     }
     if(reponse.status == 401) {
-        messageError.innerText = "Connexion expirée ou non autorisée";
+        messageError.innerText = "Connexion expirée ou compte non autorisé";
     } else {
         messageError.innerText = "Serveur indisponible";
     }
 }
+
+
 
 /* ---------------- ajout de travaux ---------------- */
 

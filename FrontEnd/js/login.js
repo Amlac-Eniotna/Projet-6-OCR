@@ -63,7 +63,7 @@ async function sendInput(inputValues) {
 
 /**
  * afficher le message d'erreur
- * @param {object} reponse - reponse de l'api
+ * @param {object} reponse - reponse de l'api ou string "error" si api injoignable
  */
 function showFailMessage(reponse) {
     let errorMessage = document.querySelector(".error-msg");
