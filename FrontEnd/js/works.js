@@ -3,6 +3,10 @@ import { filters } from "./filters.js"
 //pour faire des transfert
 let worksListGlobale;
 
+/**
+ * main du fichier works.js
+ * @returns la liste des travaux
+ */
 export async function works() {
     let worksList = await getWorks();
     worksListGlobale = worksList;
@@ -16,6 +20,9 @@ export async function works() {
     }
 }
 
+/**
+ * affiche les sections portfolio et contact si le backend repond
+ */
 function showSection() {
     let portfolio = document.getElementById("portfolio");
     let contact = document.getElementById("contact");
@@ -25,6 +32,9 @@ function showSection() {
     chargement.remove();
 }
 
+/**
+ * affiche un message d'erreur 504 si le serveur ne répond pas
+ */
 function errorMessage() {
     let chargement = document.getElementById("chargement");
     chargement.innerHTML = "";
@@ -39,9 +49,6 @@ function errorMessage() {
 
     chargement.appendChild(codeError);
     chargement.appendChild(messageError);
-
-    let contact = document.getElementById("contact");
-    contact.remove();
 }
 
 /**
