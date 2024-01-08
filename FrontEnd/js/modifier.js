@@ -1,4 +1,5 @@
 import { filteredWork } from "./works.js";
+import { filters } from "./filters.js"
 
 let worksListGlobal;
 
@@ -73,17 +74,19 @@ function displayModale() {
     modale.appendChild(grid);
 
     for(let i = 0; i < worksListGlobal.length; i++) {
-        let trash = document.createElement("i");
-        trash.className = "fa-solid fa-trash-can fa-xs";
-        trash.dataset.id = worksListGlobal[i].id;
-        let image = document.createElement("img");
-        image.src = worksListGlobal[i].imageUrl;
-        image.alt = worksListGlobal[i].title;
-        let divImage = document.createElement("div");
-        divImage.className = "modale__grid--img";
-        divImage.appendChild(trash);
-        divImage.appendChild(image);
-        grid.appendChild(divImage);
+        if(worksListGlobal[i]){
+            let trash = document.createElement("i");
+            trash.className = "fa-solid fa-trash-can fa-xs";
+            trash.dataset.id = worksListGlobal[i].id;
+            let image = document.createElement("img");
+            image.src = worksListGlobal[i].imageUrl;
+            image.alt = worksListGlobal[i].title;
+            let divImage = document.createElement("div");
+            divImage.className = "modale__grid--img";
+            divImage.appendChild(trash);
+            divImage.appendChild(image);
+            grid.appendChild(divImage);
+        }
     }
 
     let btnAddPicture = document.createElement("button");
@@ -129,10 +132,12 @@ function deleteWork() {
                     work.parentElement.remove();
                 });
                 for(let i = 0; i < worksListGlobal.length; i++) {
-                    if(worksListGlobal[i].imageUrl == event.target.parentElement.lastChild.src) {
+                    if(worksListGlobal[i] && worksListGlobal[i].imageUrl == event.target.parentElement.lastChild.src) {
                         worksListGlobal.splice(i, 1);
                     }
                 }
+                filters(worksListGlobal);
+                filteredWork();
             } else {
                 errorMessage(reponse);
             }
@@ -290,7 +295,6 @@ async function sendWork(event) {
     event.preventDefault();
     let formData = new FormData();
     let file = document.getElementById("picture-selector").files[0];
-    console.log(file)
     formData.append('image', document.getElementById("picture-selector").files[0]);
     formData.append('title', document.getElementById("title-picture-add").value);
     formData.append('category', parseInt(document.getElementById("category-picture-add").value));
@@ -348,7 +352,6 @@ function showNewWork(reponse) {
         "name": document.getElementById("category-picture-add").options[document.getElementById("category-picture-add").selectedIndex].text
     }
     worksListGlobal[worksListGlobal.length + 1] = reponse;
+    filters(worksListGlobal);
     filteredWork();
 }
-
-//ajouter un bouton filtres une fois la photo ajouter appeler filters.js ou delete si la worklist n'en a plus
