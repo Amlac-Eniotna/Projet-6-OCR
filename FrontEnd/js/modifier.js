@@ -122,7 +122,7 @@ function deleteWork() {
             let reponse = await fetch('http://localhost:5678/api/works/' + btn.dataset.id, {
                 method: 'delete',
                 headers: {Authorization: `Bearer ${token}`}
-            }).catch(() => { notDeleted("error"); });
+            }).catch(() => { errorMessage("error"); });
             if(reponse.status == 204 || reponse.status == 200){                    // signalé 204
                 let works = document.querySelectorAll(`[src="${event.target.parentElement.lastChild.src}"]`);
                 works.forEach((work) => {
@@ -134,32 +134,11 @@ function deleteWork() {
                     }
                 }
             } else {
-                notDeleted(reponse);
+                errorMessage(reponse);
             }
         });
     });
 }
-
-/**
- * affiche un message d'erreur du delete
- * @param {object} reponse - reponse de l'api ou string "error" si api injoignable
- */
-function notDeleted(reponse) {
-    let messageError = document.querySelector(".deleteError");
-    if(!(messageError)) {
-        let modale = document.querySelector(".modale");
-        messageError = document.createElement("p");
-        messageError.className = "erreur-message erreur-suppression";
-        modale.insertBefore(messageError, modale.children[0]);
-    }
-    if(reponse.status == 401) {
-        messageError.innerText = "Connexion expirée ou compte non autorisé";
-    } else {
-        messageError.innerText = "Serveur indisponible";
-    }
-}
-
-
 
 /* ---------------- ajout de travaux ---------------- */
 
@@ -167,6 +146,14 @@ function addWork() {
     let btnAddPicture = document.querySelector(".btn-ajout-photo");
     btnAddPicture.addEventListener("click", async function changeModale(event) {
         event.preventDefault();
+
+        /* ------------ erreur message effacage -------*/
+
+        if(document.querySelector(".erreur-modale"))
+            document.querySelector(".erreur-modale").remove();
+
+        /* --------------------------- */
+
         let modaleTitle = document.querySelector(".modale h3");
         modaleTitle.innerText = "Ajout photo";
         let blocCentral = document.querySelector(".modale__bloc-central");
@@ -302,19 +289,55 @@ function checkForm() {
 async function sendWork(event) {
     event.preventDefault();
     let formData = new FormData();
+    let file = document.getElementById("picture-selector").files[0];
+    console.log(file)
     formData.append('image', document.getElementById("picture-selector").files[0]);
     formData.append('title', document.getElementById("title-picture-add").value);
     formData.append('category', parseInt(document.getElementById("category-picture-add").value));
     let token = localStorage.getItem("token");
 
-    let reponse = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: {"Authorization": `Bearer ${token}`},
-        body: formData
-    });
-    if(reponse.status == 201){
-        reponse = await reponse.json();
-        showNewWork(reponse);
+    if(file.size <= 4194304 && (file.type == "image/png" || file.type == "image/jpeg")){
+        let reponse = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {"Authorization": `Bearer ${token}`},
+            body: formData
+        }).catch((e) => {
+            errorMessage("error");
+            console.log(e)
+        });
+        if(reponse.status == 201){
+            reponse = await reponse.json();
+            showNewWork(reponse);
+        } else {
+            errorMessage(reponse);
+        }
+    } else if (document.getElementById("picture-selector").files[0].size > 4194304) {
+        errorMessage("bytes");
+    } else {
+        errorMessage("extension");
+    }
+}
+
+/**
+ * affiche les message d'erreur en fonction du paramètre reçu
+ * @param {*} reponse - object si reponse de l'api ou string pour definir quel type d'erreur
+ */
+function errorMessage(reponse) {
+    let messageError = document.querySelector(".erreur-modale");
+    if(!(messageError)) {
+        let modale = document.querySelector(".modale");
+        messageError = document.createElement("p");
+        messageError.className = "erreur-message erreur-modale";
+        modale.insertBefore(messageError, modale.children[0]);
+    }
+    if(reponse.status == 401) {
+        messageError.innerText = "Connexion expirée ou compte non autorisé";
+    } else if(reponse == "error") {
+        messageError.innerText = "Serveur indisponible";
+    } else if(reponse == "extension") {
+        messageError.innerText = "Mauvais type de fichier (veuillez vérifier l'extension)";
+    } else if(reponse == "bytes") {
+        messageError.innerText = "Fichier trop volumineux";
     }
 }
 
@@ -327,3 +350,5 @@ function showNewWork(reponse) {
     worksListGlobal[worksListGlobal.length + 1] = reponse;
     filteredWork();
 }
+
+//ajouter un bouton filtres une fois la photo ajouter appeler filters.js ou delete si la worklist n'en a plus
