@@ -90,7 +90,6 @@ function showFailMessage(reponse) {
  * @param {object} reponse - reponse de l'api 
  */
 async function storageToken (reponse) {
-    // localStorage.setItem("token", reponse.token)
     let token = await reponse.json();
     localStorage.setItem("token", token.token);
     window.location.href = "../index.html";

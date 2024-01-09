@@ -1,5 +1,5 @@
-import { works } from "./works.js";
-import { modifier } from "./modifier.js";
+import { works } from "./gallery/works.js";
+import { modifier } from "./modal/modal.js";
 
 async function main() {
     let worksList = await works();
