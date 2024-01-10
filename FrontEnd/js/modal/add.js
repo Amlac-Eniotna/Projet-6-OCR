@@ -1,6 +1,7 @@
-import { filteredWork } from "../gallery/works.js";
-import { filters } from "../gallery/filters.js";
+import { works } from "../gallery/works.js";
 import { errorMessage , internalModal , worksListGlobal , categories } from "./modal";
+
+const FILE_SIZE_MAX = 4194304;
 
 /**
  * modifie la modale pour afficher la parti d'ajout de travaux
@@ -163,7 +164,7 @@ function checkForm() {
     btnAddPicture.addEventListener('click', () => {
         if(btnAddPicture.classList.contains("btn-gris"))
             errorMessage("completion");
-    })
+    });
 
     inputs.forEach((input, i) => {
         input.addEventListener('change', () => {
@@ -196,7 +197,7 @@ async function sendWork(event) {
     formData.append('category', parseInt(document.getElementById("category-picture-add").value));
     let token = localStorage.getItem("token");
 
-    if(file.size <= 4194304 && (file.type == "image/png" || file.type == "image/jpeg")){
+    if(file.size <= FILE_SIZE_MAX && (file.type == "image/png" || file.type == "image/jpeg")){
         let reponse = await fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: {"Authorization": `Bearer ${token}`},
@@ -210,7 +211,7 @@ async function sendWork(event) {
         } else {
             errorMessage(reponse);
         }
-    } else if (document.getElementById("picture-selector").files[0].size > 4194304) {
+    } else if (document.getElementById("picture-selector").files[0].size > FILE_SIZE_MAX) {
         errorMessage("bytes");
     } else {
         errorMessage("extension");
@@ -228,6 +229,5 @@ function showNewWork(reponse) {
         "name": document.getElementById("category-picture-add").options[document.getElementById("category-picture-add").selectedIndex].text
     }
     worksListGlobal[worksListGlobal.length + 1] = reponse;
-    filters(worksListGlobal);
-    filteredWork();
+    works();
 }

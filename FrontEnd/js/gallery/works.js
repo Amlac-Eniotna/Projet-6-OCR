@@ -8,12 +8,17 @@ let worksListGlobale;
  * @returns la liste des travaux
  */
 export async function works() {
+    let token = localStorage.getItem("token");
     let worksList = await getWorks();
     worksListGlobale = worksList;
     if(worksList){
         showSection();
-        filters(worksList);
-        changeWorkByFilter("Tous");
+        if(!(token)) {
+            filters(worksList);
+            changeWorkByFilter("Tous");
+        } else {
+            changeWorkByFilter("Tous");
+        }
         return worksListGlobale;
     } else if (!(worksList)) {
         errorMessage();
@@ -29,7 +34,9 @@ function showSection() {
     portfolio.removeAttribute("class");
     contact.removeAttribute("class");
     let chargement = document.getElementById("chargement");
-    chargement.remove();
+    if(chargement) {
+        chargement.remove();
+    }
 }
 
 /**

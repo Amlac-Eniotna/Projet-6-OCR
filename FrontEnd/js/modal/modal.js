@@ -133,14 +133,16 @@ export function errorMessage(reponse) {
         modale.insertBefore(messageError, modale.children[0]);
     }
     if(reponse.status == 401) {
-        messageError.innerText = "Connexion expirée ou compte non autorisé";
+        messageError.innerText = "Connexion expirée ou compte non autorisé. Tentez de vous reconnecter";
     } else if(reponse == "error") {
-        messageError.innerText = "Serveur indisponible";
+        messageError.innerText = "Serveur indisponible.";
     } else if(reponse == "extension") {
-        messageError.innerText = "Mauvais type de fichier (veuillez vérifier l'extension)";
+        messageError.innerText = "Mauvais type de fichier (veuillez vérifier l'extension).";
     } else if(reponse == "bytes") {
-        messageError.innerText = "Fichier trop volumineux";
+        messageError.innerText = "Fichier trop volumineux.";
     } else if(reponse == "completion") {
-        messageError.innerText = "Tous les champs ne sont pas remplis"
+        messageError.innerText = "Tous les champs ne sont pas remplis";
+    } else {
+        messageError.innerText = "Problème de communication avec le serveur, veuillez réessayer plus tard.";
     }
 }
