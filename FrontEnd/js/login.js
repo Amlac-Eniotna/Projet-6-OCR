@@ -1,12 +1,18 @@
 // fonction main
 function login() {
+    let noSpam = 0;
     // se lance au click du bouton de login
     let btnLogin = document.getElementById("btn-login");
-    btnLogin.addEventListener("click", (event) => {
-        event.preventDefault();
-        asyncEventListen();
+    btnLogin.addEventListener('click', (e) => {e.preventDefault()})
+    btnLogin.addEventListener("click", function clickBtn() {
         loading("click");
-    });
+        btnLogin.removeEventListener("click", clickBtn);
+        setTimeout(() => {
+            asyncEventListen();
+            noSpam = 1000;
+            btnLogin.addEventListener('click', clickBtn);
+        }, noSpam);
+    }, false);
 }
 
 /**
