@@ -1,4 +1,3 @@
-import { works } from "../gallery/works.js";
 import { errorMessage , worksListGlobal } from "./modal";
 
 /**

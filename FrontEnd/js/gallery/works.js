@@ -116,7 +116,7 @@ function whatFilterSelected() {
  * affiche les travaux en fontion du filtre selectionné
  * @param {string} filterSelected - nom du filtre selectionné 
  */
-function changeWorkByFilter(filterSelected) {
+export function changeWorkByFilter(filterSelected) {
     let worksList = worksListGlobale;
     resetFrontWorks();
     for (let i = 0; i < worksList.length; i++) {

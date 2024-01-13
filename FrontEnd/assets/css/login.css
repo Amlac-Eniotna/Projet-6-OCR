@@ -38,6 +38,9 @@ a {
 ol, ul {
 	list-style: none;
 }
+li {
+	cursor: pointer;
+}
 blockquote, q {
 	quotes: none;
 }
@@ -157,9 +160,10 @@ button[type="submit"]{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 }
 
-input[type="submit"]:active{
+button[type="submit"]:active{
 	background-color: #0E2F28;
 }
 

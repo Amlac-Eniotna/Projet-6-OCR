@@ -1,11 +1,6 @@
-//fonction main de nav.js
-export function navbar(){
-    changeNav();
-}
-
 // check et change au besoin le mot login en logout
 // puis place un eventlistener qui réagit en fonction du mot
-function changeNav(){
+export function navbar(){
     let token = localStorage.getItem("token");
     let loginNav = document.querySelectorAll("header li");
     loginNav.forEach((li) => {  

@@ -285,6 +285,7 @@ li:hover {
 	border-radius: 60px;
 	font-family: Syne;
 	border: none;
+	cursor: pointer;
 }
 
 .modale__bloc-central--img-selection {
@@ -370,6 +371,7 @@ li:hover {
 
 .btn-gris {
 	background: #A7A7A7;
+	cursor: default;
 }
 /* edition zone */
 

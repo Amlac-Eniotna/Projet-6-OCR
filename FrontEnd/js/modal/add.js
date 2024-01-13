@@ -1,4 +1,4 @@
-import { works } from "../gallery/works.js";
+import { changeWorkByFilter } from "../gallery/works.js";
 import { errorMessage , internalModal , worksListGlobal , categories } from "./modal";
 
 const FILE_SIZE_MAX = 4194304;
@@ -229,5 +229,5 @@ function showNewWork(reponse) {
         "name": document.getElementById("category-picture-add").options[document.getElementById("category-picture-add").selectedIndex].text
     }
     worksListGlobal[worksListGlobal.length + 1] = reponse;
-    works();
+    changeWorkByFilter("Tous");
 }

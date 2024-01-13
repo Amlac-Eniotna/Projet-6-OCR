@@ -87,6 +87,8 @@ function showFailMessage(reponse) {
         errorMessage.innerText = "Mauvais email ou mot de passe";
     } else if(reponse == "error") {
         errorMessage.innerText = "Connexion indisponible";
+    } else {
+        errorMessage.innerText = "Problème serveur";
     }
     loading("reset");
 }
