@@ -1,4 +1,4 @@
-import { errorMessage , worksListGlobal } from "./modal";
+import { errorMessage , worksListGlobal } from "./modal.js";
 
 /**
  * ajouts d'eventlistener sur les poubelles et envoi l'ordre de suppression à l'api en cas de clique

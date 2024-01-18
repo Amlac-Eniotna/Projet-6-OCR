@@ -1,5 +1,5 @@
 import { changeWorkByFilter } from "../gallery/works.js";
-import { errorMessage , internalModal , worksListGlobal , categories } from "./modal";
+import { errorMessage , internalModal , worksListGlobal , categories } from "./modal.js";
 
 const FILE_SIZE_MAX = 4194304;
 
